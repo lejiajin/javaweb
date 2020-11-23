@@ -23,11 +23,11 @@ public class RegistServlet extends HttpServlet {
             try {
                 if (userService.existsUsername(username)) {
                     System.out.println("用户名已存在");
-                    req.getRequestDispatcher("pages/user/regist.html").forward(req,resp);
+                    req.getRequestDispatcher("pages/user/regist.jsp").forward(req,resp);
 
                 }else {
                     userService.registUser(new User(null,username,password,email));
-                    req.getRequestDispatcher("pages/user/regist_success.html").forward(req,resp);
+                    req.getRequestDispatcher("pages/user/regist_success.jsp").forward(req,resp);
 
                 }
             } catch (SQLException e) {
@@ -36,7 +36,7 @@ public class RegistServlet extends HttpServlet {
 
         }else {
             System.out.println("验证码错误");
-            req.getRequestDispatcher("pages/user/regist.html").forward(req,resp);
+            req.getRequestDispatcher("pages/user/regist.jsp").forward(req,resp);
         }
 
 
