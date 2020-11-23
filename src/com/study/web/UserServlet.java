@@ -11,10 +11,28 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class RegistServlet extends HttpServlet {
+public class UserServlet extends HttpServlet {
     private UserService userService= new UserServiceImpl();
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    protected void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        try {
+            User login = userService.login(new User(null, username, password, null));
+            if (login==null) {
+                req.setAttribute("msg","用户名或密码错误！");
+                req.setAttribute("username",username);
+                req.getRequestDispatcher("pages/user/login.jsp").forward(req,resp);
+            }else {
+                req.getRequestDispatcher("pages/user/login_success.jsp").forward(req,resp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void regist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
@@ -43,6 +61,18 @@ public class RegistServlet extends HttpServlet {
             req.setAttribute("email",email);
             System.out.println("验证码错误");
             req.getRequestDispatcher("pages/user/regist.jsp").forward(req,resp);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action=req.getParameter("action");
+        if (action.equals("login")) {
+        login(req,resp);
+
+        }else if (action.equals("regist")){
+
+        regist(req,resp);
         }
 
 
