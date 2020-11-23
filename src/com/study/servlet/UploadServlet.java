@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 public class UploadServlet extends HttpServlet {
@@ -29,7 +30,7 @@ public class UploadServlet extends HttpServlet {
                     }else {
                         System.out.println(fileItem.getFieldName());
                         System.out.println(fileItem.getName());
-                        fileItem.write(new File("d:\\"+fileItem.getName()));
+                        fileItem.write(new File("d:\\"+fileItem.getName()+ URLEncoder.encode(fileItem.getName(),"utf-8")));
 
 
                     }

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 
 public class DownloadServlet extends HttpServlet {
     @Override
@@ -18,7 +19,7 @@ public class DownloadServlet extends HttpServlet {
         ServletContext servletContext = getServletContext();
         String mimeType = servletContext.getMimeType("/file/" + downloadFileName);
         resp.setContentType(mimeType);
-        resp.setHeader("Content-Disposition","attachment; filename="+downloadFileName);
+        resp.setHeader("Content-Disposition","attachment; filename="+ URLEncoder.encode(downloadFileName,"utf-8"));
 
         InputStream resourceAsStream = servletContext.getResourceAsStream("/file/" + downloadFileName);
         ServletOutputStream outputStream = resp.getOutputStream();
