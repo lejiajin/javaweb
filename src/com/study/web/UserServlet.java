@@ -73,6 +73,7 @@ public class UserServlet extends HttpServlet {
             Method method=this.getClass().getDeclaredMethod(action,HttpServletRequest.class,HttpServletResponse.class);
             try {
                 method.invoke(this, req, resp);
+                System.out.println(123);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
