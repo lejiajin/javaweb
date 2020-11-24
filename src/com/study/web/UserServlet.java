@@ -3,6 +3,8 @@ package com.study.web;
 import com.study.domain.User;
 import com.study.service.UserService;
 import com.study.service.impl.UserServiceImpl;
+import com.study.utils.Webutils;
+import org.apache.commons.beanutils.BeanUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 
-public class UserServlet extends HttpServlet {
+public class UserServlet extends BaseServlet {
     private UserService userService= new UserServiceImpl();
 
     protected void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,6 +41,9 @@ public class UserServlet extends HttpServlet {
         String password = req.getParameter("password");
         String email = req.getParameter("email");
         String code = req.getParameter("code");
+        User user = new User();
+        Webutils.copyParamToBean(req.getParameterMap(),user);
+
         if ("abcde".equalsIgnoreCase(code)) {
             try {
                 if (userService.existsUsername(username)) {
@@ -66,22 +71,6 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action=req.getParameter("action");
-        try {
-            Method method=this.getClass().getDeclaredMethod(action,HttpServletRequest.class,HttpServletResponse.class);
-            try {
-                method.invoke(this, req, resp);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
 
 
-    }
 }
